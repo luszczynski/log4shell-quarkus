@@ -17,14 +17,12 @@ import org.apache.logging.log4j.core.config.builder.api.LayoutComponentBuilder;
 import org.apache.logging.log4j.core.config.builder.api.RootLoggerComponentBuilder;
 import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
 
-@Path("/hello")
+@Path("/endpoint")
 public class GreetingResource {
-
-    // static final Logger logger = LogManager.getLogger(GreetingResource.class.getName());
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String hello(@QueryParam("lulu") String lulu) {
+    public String get(@QueryParam("var") String var) {
         ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder();
         AppenderComponentBuilder console = builder.newAppender("stdout", "Console"); 
         builder.add(console);
@@ -42,8 +40,9 @@ public class GreetingResource {
 
         Logger logger = LogManager.getLogger(GreetingResource.class.getName());
 
-        logger.info("Lulu = " + lulu );
-        // System.out.println("Luuuuuuuuuuu");
-        return lulu;
+        // Here is the flaw
+        logger.info("Injection point = " + var );
+
+        return var;
     }
 }
